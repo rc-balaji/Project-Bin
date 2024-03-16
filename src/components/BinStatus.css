@@ -1,0 +1,75 @@
+.binStatusContainer {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .binVisual {
+    width: 150px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0);
+    transition: transform 0.3s ease;
+  }
+  
+  .binVisual:hover {
+    transform: translateY(-5px);
+  }
+  
+  .binLabel {
+    background-color: #f7f7f7;
+    color: #333;
+    padding: 10px 0;
+    font-weight: bold;
+  }
+  
+  .binContainer {
+    background-color: #eee;
+    position: relative;
+    height: 150px;
+  }
+  
+  .binFill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: height 0.5s ease-out, background-color 0.3s;
+  }
+  
+  .binValue {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 5px 0;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .binFooter {
+    background-color: #f7f7f7;
+    color: #333;
+    padding: 10px 0;
+  }
+  
+  /* Specific Styles */
+  .empty {
+    background-color: #73f978;
+  }
+  
+  .useMe {
+    background-color: #e7dd81;
+  }
+  
+  .aboutToFull {
+    background-color: #eb7753;
+  }
+  
+  .full {
+    background-color: #e04c5b;
+  }
+  
