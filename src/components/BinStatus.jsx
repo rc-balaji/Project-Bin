@@ -22,7 +22,9 @@ const BinStatus = ({ latestData }) => {
           {/* Adjusted for styling purposes */}
           <div
             className={`binFill ${className}`}
-            style={{ height: `${value > 5 ? value : 0}%` }}
+            style={{
+              height: `${new BigInt(`${value}`).round(2) > 5 ? value : 0}%`,
+            }}
           >
             <div className="binValue">{value > 5 ? value : 0}%</div>
           </div>
