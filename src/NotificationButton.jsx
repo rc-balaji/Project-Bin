@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./NotificationButton.css"; // Ensure this file includes the new styles
-
+import bell from "./bell.png"
 function NotificationButton({ latestData }) {
   const [isOpen, setIsOpen] = useState(false);
 
   // Determine if the notification widget should be shown
   const shouldShowNotification = () => {
-    if (latestData.Alert && latestData.Alert === "Gas Detected") return true;
+    if (latestData.ALERT && latestData.ALERT === "Gas Detected") return true;
 
     return Object.keys(latestData).some((key) => {
       if (key.startsWith("Bin")) {
@@ -26,8 +26,8 @@ function NotificationButton({ latestData }) {
   const notificationContent = () => {
     let content = [];
 
-    if (latestData.Alert && latestData.Alert === "Gas Detected") {
-      content.push(<p key="alert">Alert: {latestData.Alert}</p>);
+    if (latestData.ALERT && latestData.ALERT === "Gas Detected") {
+      content.push(<p key="alert">Alert: {latestData.ALERT}</p>);
     }
 
     Object.keys(latestData)
@@ -57,9 +57,7 @@ function NotificationButton({ latestData }) {
           isOpen || shouldShowNotification() ? "newNotification" : ""
         }`}
         onClick={toggleNotifications}
-      >
-        🔔
-      </button>
+><img src={bell} alt="bell" width = {30} srcset="" /> </button>
       {isOpen && (
         <div className="notificationPopup">
           <p>

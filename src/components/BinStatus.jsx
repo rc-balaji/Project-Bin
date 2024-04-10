@@ -15,6 +15,7 @@ const BinStatus = ({ latestData }) => {
   // Component for rendering individual bin status with visual effect
   const BinVisual = ({ value, bin }) => {
     const { className, label } = getStatus(value);
+    value = parseFloat(value).toFixed(2)
     return (
       <div className="binVisual">
         <div className="binLabel">{bin}</div>
