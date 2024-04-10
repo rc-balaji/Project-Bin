@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./NotificationButton.css"; // Ensure this file includes the new styles
-import bell from "./bell.png"
+import bell from "./bell.png";
 function NotificationButton({ latestData }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -57,7 +57,9 @@ function NotificationButton({ latestData }) {
           isOpen || shouldShowNotification() ? "newNotification" : ""
         }`}
         onClick={toggleNotifications}
-><img src={bell} alt="bell" width = {30} srcset="" /> </button>
+      >
+        <img src={bell} alt="bell" width={30} />{" "}
+      </button>
       {isOpen && (
         <div className="notificationPopup">
           <p>

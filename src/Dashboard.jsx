@@ -19,9 +19,14 @@ function Dashboard({ username, onLogout }) {
   const [ipAddress, setIpAddress] = useState("");
 
   useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
     const urlIP = window.location.hostname;
     setIpAddress(urlIP);
 
+    // Define the fetchData function within the effect
     const fetchData = async () => {
       if (!urlIP) return;
       try {
@@ -30,6 +35,7 @@ function Dashboard({ username, onLogout }) {
 
         if (fetchedData && fetchedData.length > 0) {
           setData(fetchedData);
+          // console.log(fetchData);
           const lastItem = fetchedData[fetchedData.length - 1];
           setLast(lastItem);
 
@@ -55,9 +61,15 @@ function Dashboard({ username, onLogout }) {
       }
     };
 
+    // Call fetchData once to load data immediately on component mount
     fetchData();
-  }, [ipAddress, data]);
 
+    // Set up the interval to fetch data every 30 seconds
+    const intervalId = setInterval(fetchData, 30000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [ipAddress]);
   return (
     <div className="dashboardContainer">
       <header className="dashboardHeader">
