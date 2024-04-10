@@ -6,7 +6,7 @@ const BinStatus = ({ latestData }) => {
 
   // This function determines the status and associated class based on the bin's value.
   const getStatus = (value) => {
-    if (value === 0) return { label: "Empty", className: "empty" };
+    if (value <= 5) return { label: "Empty", className: "empty" };
     if (value === 100) return { label: "Full", className: "full" };
     if (value > 80) return { label: "About to full", className: "aboutToFull" };
     return { label: "Use me", className: "useMe" };
@@ -20,8 +20,11 @@ const BinStatus = ({ latestData }) => {
         <div className="binLabel">{bin}</div>
         <div className="binContainer">
           {/* Adjusted for styling purposes */}
-          <div className={`binFill ${className}`} style={{ height: `${value}%` }}>
-            <div className="binValue">{value}%</div>
+          <div
+            className={`binFill ${className}`}
+            style={{ height: `${value > 5 ? value : 0}%` }}
+          >
+            <div className="binValue">{value > 5 ? value : 0}%</div>
           </div>
         </div>
         <div className="binFooter">{label}</div>
@@ -34,7 +37,7 @@ const BinStatus = ({ latestData }) => {
       {/* Filter out non-bin related properties before mapping */}
       {latestData &&
         Object.entries(latestData)
-          .filter(([key, _]) => key.startsWith('Bin'))
+          .filter(([key, _]) => key.startsWith("Bin"))
           .map(([bin, value]) => (
             <BinVisual key={bin} value={value} bin={bin} />
           ))}

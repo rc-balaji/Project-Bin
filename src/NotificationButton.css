@@ -1,0 +1,64 @@
+.notificationContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.notificationButton {
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.notificationButton:hover,
+.notificationButton.newNotification {
+    background-color: #e0e0e0;
+    /* Darker grey to indicate hover or new notification */
+}
+
+.notificationButton.newNotification {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.notificationPopup {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 100;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 250px;
+}
+
+.full {
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+
+.aboutToFull {
+    color: rgb(255, 255, 255);
+}
+
+.normal {
+    color: green;
+}
+
+.statusLabel {
+    display: inline-block;
+    padding: 2px 5px;
+    margin: 2px;
+    border-radius: 5px;
+    font-size: 14px;
+}

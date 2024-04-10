@@ -1,34 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import Graph from './components/Graph';
-import CountWidget from './components/CountWidget';
-import BinStatus from './components/BinStatus';
-import LogoutButton from './LogoutButton';
-import './Dashboard.css';
+import React, { useEffect, useState } from "react";
+import Graph from "./components/Graph";
+import CountWidget from "./components/CountWidget";
+import BinStatus from "./components/BinStatus";
+import LogoutButton from "./LogoutButton";
+import "./Dashboard.css";
+import NotificationButton from "./NotificationButton"; // Assuming it's in the same directory
 
 function Dashboard({ username, onLogout }) {
   const [data, setData] = useState([]);
-  const [binCounts, setBinCounts] = useState({ Bin1: 0, Bin2: 0, Bin3: 0, Bin4: 0 });
+  const [binCounts, setBinCounts] = useState({
+    Bin1: 0,
+    Bin2: 0,
+    Bin3: 0,
+    Bin4: 0,
+  });
   const [last, setLast] = useState({});
-  const [period, setPeriod] = useState({ start: '', end: '' });
-
-  const excelDateToJSDate = (serial) => {
-    const utc_days = Math.floor(serial - 25569);
-    const utc_value = utc_days * 86400; 
-    const date_info = new Date(utc_value * 1000 + (new Date().getTimezoneOffset() * 60000));
-    return date_info;
-  };
+  const [period, setPeriod] = useState({ start: "", end: "" });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/get-excel-data');
+        const response = await fetch("http://localhost:3001/get-excel-data");
         const fetchedData = await response.json();
-        if(fetchedData && fetchedData.length > 0) {
-          const modifiedData = fetchedData.map(d => ({
-            ...d,
-            dateTime: excelDateToJSDate(d.Date),
-          }));
+
+        console.log(fetchData);
+        if (fetchedData && fetchedData.length > 0) {
+          const modifiedData = fetchedData;
+
           setData(modifiedData);
+
+          console.log(modifiedData);
           const firstItem = modifiedData[0];
           const lastItem = modifiedData[modifiedData.length - 1];
           setLast(lastItem);
@@ -37,7 +38,7 @@ function Dashboard({ username, onLogout }) {
           modifiedData.forEach((item, index) => {
             if (index > 0) {
               const prevItem = modifiedData[index - 1];
-              Object.keys(newBinCounts).forEach(bin => {
+              Object.keys(newBinCounts).forEach((bin) => {
                 if (item[bin] > prevItem[bin]) {
                   newBinCounts[bin] += 1;
                 }
@@ -48,13 +49,13 @@ function Dashboard({ username, onLogout }) {
 
           if (firstItem && lastItem) {
             setPeriod({
-              start: `${firstItem.dateTime.toLocaleDateString()} ${firstItem.Time}`,
-              end: `${lastItem.dateTime.toLocaleDateString()} ${lastItem.Time}`
+              start: `${firstItem.Date} ${firstItem.Time}`,
+              end: `${lastItem.Date} ${lastItem.Time}`,
             });
           }
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -66,10 +67,22 @@ function Dashboard({ username, onLogout }) {
       <header className="dashboardHeader">
         <h1>Bin Monitor</h1>
         <h3>Real-Time Bin Dashboard</h3>
-        <h5>Welcome, {username}! <LogoutButton onLogout={onLogout} /></h5>
+        <div
+          style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+        >
+          <h5>
+            Welcome, {username}! <LogoutButton onLogout={onLogout} />
+          </h5>
+          <div style={{ padding: "11px 10px 10px 0px" }}>
+            <NotificationButton latestData={last} />
+          </div>
+        </div>
       </header>
+
       <div className="timeIndicator">
-        <span>Start: {period.start} - End: {period.end}</span>
+        <span>
+          Start: {period.start} - End: {period.end}
+        </span>
       </div>
       <div className="dataVisualization">
         <div className="componentWithTitle">
