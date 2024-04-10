@@ -15,6 +15,7 @@ const BinStatus = ({ latestData }) => {
   // Component for rendering individual bin status with visual effect
   const BinVisual = ({ value, bin }) => {
     const { className, label } = getStatus(value);
+    value = parseFloat(value).toFixed(2);
     return (
       <div className="binVisual">
         <div className="binLabel">{bin}</div>
@@ -23,7 +24,7 @@ const BinStatus = ({ latestData }) => {
           <div
             className={`binFill ${className}`}
             style={{
-              height: `${new BigInt(`${value}`).round(2) > 5 ? value : 0}%`,
+              height: `${value > 5 ? value : 0}%`,
             }}
           >
             <div className="binValue">{value > 5 ? value : 0}%</div>

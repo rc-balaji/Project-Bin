@@ -4,16 +4,12 @@ import random
 from datetime import datetime, timedelta
 
 initial_datetime = datetime(2004, 12, 12, 13, 21)
-# Added new columns for Metal, Food, Paper, Other
-df = pd.DataFrame(columns=['Date', 'Time', 'Bin1', 'Bin2', 'Bin3', 'Bin4', 'ALERT', 'Metal', 'Food', 'Paper', 'Other'], 
-                  data=[[initial_datetime.strftime("%d-%m-%Y"), initial_datetime.strftime("%H:%M"), 0, 0, 0, 0, 'Normal', '', '', '', '']])
+# Add 'Type' to the columns list
+df = pd.DataFrame(columns=['Date', 'Time', 'Bin1', 'Bin2', 'Bin3', 'Bin4', 'ALERT', 'Type'], 
+                  data=[[initial_datetime.strftime("%d-%m-%Y"), initial_datetime.strftime("%H:%M"), 0, 0, 0, 0, 'Normal', 'Metal']])
 
 all_bins_full = False
-
-# Function to randomly assign strings to the new columns
-def assign_material_types():
-    materials = ['Metal', 'Food', 'Paper', 'Other']
-    return random.choice(materials)
+types = ['Metal', 'Food', 'Paper', 'Other']  # Possible values for the 'Type' column
 
 while not all_bins_full:
     last_row = df.iloc[-1].copy()
@@ -29,11 +25,8 @@ while not all_bins_full:
         selected_bin = random.choice(available_bins)
         last_row[selected_bin] = min(last_row[selected_bin] + random.randint(1, 10), 100)
         last_row['ALERT'] = 'Gas Detected' if random.random() > 0.8 else 'Normal'
-
-        # Assign random materials to the new columns for each new row
-        for material in ['Metal', 'Food', 'Paper', 'Other']:
-            last_row[material] = assign_material_types()
-
+        # Randomly select a 'Type' value for the new row
+        last_row['Type'] = random.choice(types)
         df = pd.concat([df, pd.DataFrame([last_row])], ignore_index=True)
     else:
         all_bins_full = True

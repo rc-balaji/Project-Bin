@@ -4,49 +4,45 @@ import CountWidget from "./components/CountWidget";
 import BinStatus from "./components/BinStatus";
 import LogoutButton from "./LogoutButton";
 import "./Dashboard.css";
-import NotificationButton from "./NotificationButton"; // Assuming it's in the same directory
+import NotificationButton from "./NotificationButton";
 
 function Dashboard({ username, onLogout }) {
   const [data, setData] = useState([]);
-  const [binCounts, setBinCounts] = useState({
-    Bin1: 0,
-    Bin2: 0,
-    Bin3: 0,
-    Bin4: 0,
+  const [binTypeCounts, setBinTypeCounts] = useState({
+    Metal: 0,
+    Paper: 0,
+    Food: 0,
+    Other: 0,
   });
   const [last, setLast] = useState({});
   const [period, setPeriod] = useState({ start: "", end: "" });
+  const [ipAddress, setIpAddress] = useState("");
 
   useEffect(() => {
+    const urlIP = window.location.hostname;
+    setIpAddress(urlIP);
+
     const fetchData = async () => {
+      if (!urlIP) return;
       try {
-        const response = await fetch("http://localhost:3001/get-excel-data");
+        const response = await fetch(`http://${urlIP}:3001/get-excel-data`);
         const fetchedData = await response.json();
 
-        console.log(fetchData);
         if (fetchedData && fetchedData.length > 0) {
-          const modifiedData = fetchedData;
-
-          setData(modifiedData);
-
-          console.log(modifiedData);
-          const firstItem = modifiedData[0];
-          const lastItem = modifiedData[modifiedData.length - 1];
+          setData(fetchedData);
+          const lastItem = fetchedData[fetchedData.length - 1];
           setLast(lastItem);
 
-          let newBinCounts = { Bin1: 0, Bin2: 0, Bin3: 0, Bin4: 0 };
-          modifiedData.forEach((item, index) => {
-            if (index > 0) {
-              const prevItem = modifiedData[index - 1];
-              Object.keys(newBinCounts).forEach((bin) => {
-                if (item[bin] > prevItem[bin]) {
-                  newBinCounts[bin] += 1;
-                }
-              });
+          let updatedBinTypeCounts = { Metal: 0, Paper: 0, Food: 0, Other: 0 };
+          fetchedData.forEach((item) => {
+            const type = item.Type;
+            if (type) {
+              updatedBinTypeCounts[type] += 1;
             }
           });
-          setBinCounts(newBinCounts);
+          setBinTypeCounts(updatedBinTypeCounts);
 
+          const firstItem = fetchedData[0];
           if (firstItem && lastItem) {
             setPeriod({
               start: `${firstItem.Date} ${firstItem.Time}`,
@@ -60,7 +56,7 @@ function Dashboard({ username, onLogout }) {
     };
 
     fetchData();
-  }, [data]);
+  }, [ipAddress, data]);
 
   return (
     <div className="dashboardContainer">
@@ -78,7 +74,6 @@ function Dashboard({ username, onLogout }) {
           </div>
         </div>
       </header>
-
       <div className="timeIndicator">
         <span>
           Start: {period.start} - End: {period.end}
@@ -96,7 +91,7 @@ function Dashboard({ username, onLogout }) {
           </div>
           <div className="componentWithTitle">
             <h2 className="componentTitle">Count Widget</h2>
-            <CountWidget binCounts={binCounts} />
+            <CountWidget binCounts={binTypeCounts} />
           </div>
         </div>
       </div>

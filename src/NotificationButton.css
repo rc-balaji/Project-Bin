@@ -15,7 +15,7 @@
 
 .notificationButton:hover,
 .notificationButton.newNotification {
-    background-color: #e0e0e0;
+    background-color: #ffffff;
     /* Darker grey to indicate hover or new notification */
 }
 
